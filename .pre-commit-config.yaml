@@ -1,0 +1,59 @@
+exclude: ^(migrations|src|venv|.venv|./*.js)
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim Trailing Whitespaces
+        stages: [commit]
+
+      - id: check-yaml
+        name: Check YAML files
+        stages: [commit]
+
+      - id: end-of-file-fixer
+        name: Check empty line at end of file
+
+      - id: requirements-txt-fixer
+        name: Requirements File Fixer
+
+      - id: debug-statements
+        name: Python Debug Statements
+        stages: [commit]
+
+  - repo: https://github.com/PYCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: Isort (Sorting Imports)
+        args: ["--profile", "black"]
+        exclude: ^fraznetapp/models/__init__.py$
+
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        name: Black (code formatting)
+        stages: [commit]
+        args: [--line-length=88]
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        name: Flake8 (Check for PEP-8 Standard)
+        args:
+          [
+            "--exclude=src/settings/*, */migrations/*",
+            "--ignore=F403, F401, F405, W503",
+            "--max-line-length=88",
+          ]
+        stages: [commit]
+
+  - repo: local
+    hooks:
+      - id: validate-commit-msg
+        name: Validate Commit Message
+        entry: ./commit-msg.sh
+        language: script
+        stages: [commit-msg]
