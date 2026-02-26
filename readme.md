@@ -22,7 +22,7 @@ cd django-boilerplate-code
 poetry install
 
 # 3. Activate the virtual environment
-poetry shell
+eval $(poetry env activate)
 
 # 4. Copy env file and configure it
 cp .env.example .env
