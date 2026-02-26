@@ -1,6 +1,7 @@
 import os
 
 from django.core.management.base import BaseCommand
+from textwrap import dedent
 
 """
 Custom app structure
@@ -121,31 +122,33 @@ class Command(BaseCommand):
         )
 
     def get_apps_py_content(self, app_name):
-        return f"""from django.apps import AppConfig
-
-
-                class {app_name.capitalize()}Config(AppConfig):
-                    default_auto_field = 'django.db.models.BigAutoField'
-                    name = '{app_name}'
-            """
+        return dedent(f"""\
+            from django.apps import AppConfig
+            class {app_name.capitalize()}Config(AppConfig):
+                default_auto_field = 'django.db.models.BigAutoField'
+                name = '{app_name}'
+            """)
 
     def get_admin_py_content(self):
-        return """from django.contrib import admin
+        return dedent("""\
+            from django.contrib import admin
 
                 # Register your models here.
-            """
+            """)
 
     def get_main_urls_py_content(self, app_name):
-        return f"""# Main URLs for the {app_name} app,
+        return dedent(f"""\
+            # Main URLs for the {app_name} app,
             from django.urls import path, include
 
             urlpatterns = [
                 path('api/v1/', include('{app_name}.api.v1.urls')),
             ]
-        """
+            """)
 
     def get_api_urls_py_content(self):
-        return """# This includes version 1 (v1) apis for the app
+        return dedent("""\
+            # This includes version 1 (v1) apis for the app
             from django.urls import path, include
             from rest_framework.routers import DefaultRouter
 
@@ -157,7 +160,7 @@ class Command(BaseCommand):
                 path('', include(router.urls)),
                 # Add your additional version 1 API endpoints here
             ]
-            """
+            """)
 
 
 # to run this command

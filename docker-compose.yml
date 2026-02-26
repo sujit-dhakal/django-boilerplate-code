@@ -1,15 +1,18 @@
 services:
   web:
     build: .
-    container_name: ipo_backend_app
     command: gunicorn src.wsgi:application --bind 0.0.0.0:8000 --reload
     volumes:
       - .:/app
+      - ./static:/app/static
+      - ./media:/app/media
+      - ./staticfiles:/app/staticfiles
     ports:
       - "8000:8000"
     depends_on:
-      - redis
-    entrypoint: [ "/app/entrypoint.sh" ]
+      redis:
+        condition: service_healthy
+    entrypoint: ["/app/entrypoint.sh"]
     extra_hosts:
       - "host.docker.internal:host-gateway"
     env_file:
@@ -17,36 +20,38 @@ services:
 
   celery:
     build: .
-    container_name: celery_worker
     command: celery -A src worker --loglevel=info
     volumes:
       - .:/app
     env_file:
       - .env
     depends_on:
-      - redis
-      - web
+      redis:
+        condition: service_healthy
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
   celery-beat:
     build: .
-    container_name: celery_beat
     command: celery -A src beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     volumes:
       - .:/app
     env_file:
       - .env
     depends_on:
-      - redis
-      - web
+      redis:
+        condition: service_healthy
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
   redis:
     image: redis:7-alpine
-    container_name: redis_broker
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     extra_hosts:
       - "host.docker.internal:host-gateway"
