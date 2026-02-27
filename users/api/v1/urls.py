@@ -1,13 +1,13 @@
-# This includes version 1 (v1) apis for the app
-            from django.urls import path, include
-            from rest_framework.routers import DefaultRouter
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-            router = DefaultRouter()
-            # Register your viewsets here
-            # router.register(r'example', views.ExampleViewSet)
+from users.api.v1.views.authentication import GetUserData, LoginView, RegisterView
 
-            urlpatterns = [
-                path('', include(router.urls)),
-                # Add your additional version 1 API endpoints here
-            ]
-            
+router = DefaultRouter()
+
+urlpatterns = [
+    path("", include(router.urls)),
+    path("auth/login/", LoginView.as_view(), name="login"),
+    path("auth/register/", RegisterView.as_view(), name="register"),
+    path("auth/me/", GetUserData.as_view(), name="get_user"),
+]

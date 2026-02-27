@@ -2,7 +2,7 @@ from core.serializers import DynamicFieldsModelSerializer
 from users.models import CustomUser
 
 
-class UserSerializer(DynamicFieldsModelSerializer):
+class CustomUserSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
@@ -12,5 +12,5 @@ class UserSerializer(DynamicFieldsModelSerializer):
             "last_name",
             "contact",
             "email",
-            "is_admin"
+            "is_admin",
         ]

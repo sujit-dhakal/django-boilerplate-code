@@ -85,7 +85,7 @@ CSRF_TRUSTED_ORIGINS = build_origin_list(domains)
 
 CORS_ALLOWED_ORIGINS = build_origin_list(domains)
 
-# AUTH_USER_MODEL = "users.CustomUser"
+AUTH_USER_MODEL = "users.CustomUser"
 
 
 ROOT_URLCONF = "src.urls"

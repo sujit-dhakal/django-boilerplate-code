@@ -1,7 +1,5 @@
-# Main URLs for the users app,
-            from django.urls import path, include
+from django.urls import include, path
 
-            urlpatterns = [
-                path('api/v1/', include('users.api.v1.urls')),
-            ]
-        
+urlpatterns = [
+    path("api/v1/users/", include("users.api.v1.urls")),
+]
