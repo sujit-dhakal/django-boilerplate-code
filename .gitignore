@@ -260,7 +260,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-src/static/*
+# (redundant entry removed)
 
 **/.DS_Store
 
@@ -270,3 +270,5 @@ requirements-mac.txt
 
 *.csv
 ./*.csv
+
+staticfiles/
